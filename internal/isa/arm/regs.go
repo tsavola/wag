@@ -13,7 +13,8 @@ const (
 	RegResult         = reg.Result
 	RegScratch        = reg.ScratchISA
 	RegImportVariadic = reg.R(2)  // <- AllocIntFirst
-	_                 = reg.R(25) // <- AllocIntLast
+	_                 = reg.R(9)  // <- AllocIntLast (interp)
+	_                 = reg.R(25) // <- AllocIntLast (direct)
 	RegMemoryBase     = reg.R(26)
 	RegTextBase       = reg.R(27)
 	RegStackLimit4    = reg.R(28)

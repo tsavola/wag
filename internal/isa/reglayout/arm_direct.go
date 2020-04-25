@@ -2,14 +2,14 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// +build wagamd64 amd64,!wagarm64
+// +build wagarm64,!waginterp arm64,!wagamd64,!waginterp
 
 package reglayout
 
 const (
-	AllocIntFirst = 5  // rbp
-	AllocIntLast  = 13 // r13
+	AllocIntFirst = 2
+	AllocIntLast  = 25
 
-	AllocFloatFirst = 2  // xmm2
-	AllocFloatLast  = 15 // xmm15
+	AllocFloatFirst = 2
+	AllocFloatLast  = 31
 )

@@ -35,18 +35,21 @@ build: generate
 	$(GO) build $(BUILDFLAGS) $(PACKAGES)
 	$(GO) build $(BUILDFLAGS) -tags=wagamd64 $(PACKAGES)
 	$(GO) build $(BUILDFLAGS) -tags=wagarm64 $(PACKAGES)
+	$(GO) build $(BUILDFLAGS) -tags=wagarm64,waginterp $(PACKAGES)
 	$(GO) build $(BUILDFLAGS) -o bin/wasys ./cmd/wasys
 
 vet: build
 	$(GO) vet $(VETFLAGS) $(PACKAGES) $(ARCH_PACKAGES)
 	$(GO) vet $(VETFLAGS) -tags=wagamd64 $(PACKAGES) $(X86_PACKAGES)
 	$(GO) vet $(VETFLAGS) -tags=wagarm64 $(PACKAGES) $(ARM_PACKAGES)
+	$(GO) vet $(VETFLAGS) -tags=wagarm64,waginterp $(PACKAGES) $(ARM_PACKAGES)
 
 check: vet
 	$(MAINTESTENV) $(GO) test $(TESTFLAGS) $(PACKAGES)
 	$(GO) test $(TESTFLAGS) $(ARCH_PACKAGES)
 	$(GO) test $(TESTFLAGS) -tags=wagamd64 -run=^TestFuzz
 	$(GO) test $(TESTFLAGS) -tags=wagarm64 -run=^TestFuzz
+	$(GO) test $(TESTFLAGS) -tags=wagarm64,waginterp -run=^TestFuzz
 	bin/wasys $(WASYSFLAGS) testdata/hello.wasm
 	bin/wasys $(WASYSFLAGS) testdata/rust/test.wasm
 

@@ -6,7 +6,6 @@ package arm
 
 import (
 	"encoding/binary"
-	"fmt"
 
 	"github.com/tsavola/wag/internal/gen/link"
 	"github.com/tsavola/wag/internal/isa/arm/in"
@@ -78,16 +77,7 @@ func updateBranchInsn(text []byte, addr, labelAddr int32) {
 	insn := binary.LittleEndian.Uint32(text[branchAddr:])
 
 	// MaxFuncSize ensures that offset is not out of range.
-	switch {
-	case insn>>25 == 0x2a: // Conditional branch.
-		insn = insn&^(0x7ffff<<5) | in.Int19(offset)<<5
-
-	case (insn>>26)&0x1f == 0x05: // Unconditional branch.
-		insn = insn&^0x3ffffff | in.Int26(offset)
-
-	default:
-		panic(fmt.Sprintf("unknown branch instruction encoding: %#v", insn))
-	}
+	insn = in.UpdateBranchOffset(insn, offset)
 
 	binary.LittleEndian.PutUint32(text[branchAddr:], insn)
 }
